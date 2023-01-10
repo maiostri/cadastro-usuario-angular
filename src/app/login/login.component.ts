@@ -1,7 +1,6 @@
 import { AuthService } from './../services/auth.service';
 import { Router } from '@angular/router';
 import { FormBuilder } from '@angular/forms';
-import { UsersService } from './../services/users.service';
 import { Component } from '@angular/core';
 
 @Component({
@@ -10,8 +9,10 @@ import { Component } from '@angular/core';
   styleUrls: ['./login.component.css'],
 })
 export class LoginComponent {
+
+  hasError: boolean = false;
+
   constructor(
-    private usuarioService: UsersService,
     private formBuilder: FormBuilder,
     private authService: AuthService,
     private route: Router,
@@ -23,12 +24,18 @@ export class LoginComponent {
   });
 
   onSubmit() {
-    this.usuarioService.login(
+    this.authService.login(
       this.loginForm.value.email ?? '',
       this.loginForm.value.senha ?? ''
-    ).subscribe((retorno) => {
-      this.authService.persistToken((retorno as any).accessToken);
-      this.route.navigate(["/home"]);
-    })
+    ).subscribe({
+      next: (retorno) => {
+        this.authService.persistToken((retorno as any).accessToken);
+        this.route.navigate(["/home"]);
+      },
+      error: (error) => {
+        this.hasError = true;
+      }
+    } 
+    )
   }
 }

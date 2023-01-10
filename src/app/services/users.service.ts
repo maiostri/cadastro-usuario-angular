@@ -1,4 +1,6 @@
-import { HttpClient } from '@angular/common/http';
+import { AuthService } from './auth.service';
+import { Observable } from 'rxjs';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import Usuario from '../model/usuario';
 
@@ -6,14 +8,23 @@ import Usuario from '../model/usuario';
   providedIn: 'root',
 })
 export class UsersService {
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient, private authService: AuthService) {}
 
   adicionaUsuario = (usuario: Usuario) =>
     this.http.post('http://localhost:5000/signup', usuario);
 
-  login = (email: string, senha: string) =>
-    this.http.post('http://localhost:5000/login', { email, senha });
+  listaUsuarios = (): Observable<Usuario[]> => {
+    return this.http.get<Usuario[]>('http://localhost:5000/usuarios', {
+      headers: this.authService.buildHeaders(),
+    });
+  };
 
-  validaLogin = (token: string) =>
-    this.http.post('http://localhost:5000/valida', { token });
+  retornaUsuario = (id: String) =>
+    this.http.get<Usuario>(`http://localhost:5000/usuarios/${id}`);
+
+  atualizaUsuario = (usuario: Usuario) =>
+    this.http.put(`http://localhost:5000/usuarios/${usuario._id}`, usuario);
+
+  removerUsuario = (id: string) =>
+    this.http.delete(`http://localhost:5000/usuarios/${id}`);
 }

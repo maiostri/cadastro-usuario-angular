@@ -1,0 +1,8 @@
+<div>
+  <li *ngFor="let usuario of usuarios">
+    Nome: {{ usuario.nome }}
+    Email: {{ usuario.email }}
+    <a [routerLink]="[usuario._id]" routerLinkActive="router-link-active">Editar</a>
+    <button (click)="remover(usuario._id)">Remover</button>
+  </li>
+</div>
