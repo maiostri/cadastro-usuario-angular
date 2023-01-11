@@ -1,8 +1,12 @@
 <div>
+  <input
+    type="search"
+    placeholder="Entre com o nome a ser pesquisado."
+    [formControl]="searchField"/><br>
   <li *ngFor="let usuario of usuarios">
     Nome: {{ usuario.nome }}
     Email: {{ usuario.email }}
     <a [routerLink]="[usuario._id]" routerLinkActive="router-link-active">Editar</a>
-    <button (click)="remover(usuario._id)">Remover</button>
+    <button (click)="remover(usuario)">Remover</button>
   </li>
 </div>
