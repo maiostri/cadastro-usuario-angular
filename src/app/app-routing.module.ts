@@ -1,19 +1,16 @@
-import { UsuariosComponent } from './usuarios/usuarios.component';
 import { AuthService } from './services/auth.service';
 import { HomeComponent } from './home/home.component';
-import { CadastroComponent } from './cadastro/cadastro.component';
-import { LoginComponent } from './login/login.component';
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes, CanActivate } from '@angular/router';
 
 const routes: Routes = [
   {
     path: 'login',
-    component: LoginComponent,
+    loadChildren: () => import('./login/login.module').then(m => m.LoginModule)
   },
   {
     path: 'cadastro',
-    component: CadastroComponent,
+    loadChildren: () => import('./cadastro/cadastro.module').then(m => m.CadastroModule),
   },
   {
     path: 'home',
@@ -22,12 +19,12 @@ const routes: Routes = [
     children: [
       {
         path: 'usuarios',
-        component: UsuariosComponent,
+        loadChildren: () => import('./usuarios/usuarios.module').then(m => m.UsuariosModule),
         canActivate: [AuthService],
       },
       {
         path: 'usuarios/:id',
-        component: CadastroComponent,
+        loadChildren: () => import('./cadastro/cadastro.module').then(m => m.CadastroModule),
         canActivate: [AuthService],
       },
     ],
