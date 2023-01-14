@@ -37,6 +37,7 @@ export class CadastroComponent implements OnInit {
             nome: usuario.nome,
             email: usuario.email,
             senha: '',
+            permissao: usuario.permissao
           });
         },
         error: (error) => console.error(error)
@@ -49,6 +50,7 @@ export class CadastroComponent implements OnInit {
     nome: '',
     email: '',
     senha: '',
+    permissao: ''
   });
 
   onSubmit() {
@@ -65,6 +67,7 @@ export class CadastroComponent implements OnInit {
     // Se não tem id é pra inserir.
     if (this.id) {
       usuario._id = this.id;
+      usuario.permissao = this.cadastroForm.value.permissao ?? '';
       this.usersService.atualizaUsuario(usuario).subscribe({
         next: (retorno) => this.route.navigate(["/home/usuarios"])
       });

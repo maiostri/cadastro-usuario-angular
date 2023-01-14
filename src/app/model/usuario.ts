@@ -3,6 +3,7 @@ export default class Usuario {
   email: string = '';
   senha: string = '';
   _id: string = '';
+  permissao: string = '';
 
   constructor(nome: string, email: string, senha: string, id: string) {
     this.nome = nome;

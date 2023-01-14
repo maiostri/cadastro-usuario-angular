@@ -15,5 +15,11 @@
     <input type="password" id="senha" formControlName="senha" />
   </div>
 
+  <div *ngIf="id">
+    <label for="permissao">Permissão</label>
+    <input type="text" id="permissao" formControlName="permissao" />
+  </div>
+
+
   <button class="button" type="submit">Criar usuário</button>
 </form>

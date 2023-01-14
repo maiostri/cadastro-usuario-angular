@@ -1,9 +1,6 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import {
-  ActivatedRouteSnapshot,
-  Router,
-} from '@angular/router';
+import { ActivatedRouteSnapshot, Router } from '@angular/router';
 
 @Injectable({
   providedIn: 'root',
@@ -22,6 +19,7 @@ export class AuthService {
       { token },
       {
         headers: this.buildHeaders(),
+        observe: 'response',
       }
     );
 
@@ -35,7 +33,15 @@ export class AuthService {
     }
 
     this.validaLogin(this.token).subscribe((retorno) => {
-      console.log('validado!');
+      console.log(route.url[0].toString());
+
+      // Aqui colocamos a lógica de validação de permissões.
+      if (
+        route.url[0].path.includes('usuarios') &&
+        (retorno as any).body.permissao != 'admin'
+      ) {
+        this.router.navigate(['/home']);
+      }
     });
   }
 
